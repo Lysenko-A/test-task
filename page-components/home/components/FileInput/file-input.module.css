@@ -1,0 +1,53 @@
+.root {
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.input {
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  position: relative;
+  z-index: 20;
+}
+
+.section {
+  width: 100%;
+}
+
+.imgBox {
+  width: 95px;
+  height: 95px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 3px solid var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview {
+  color: var(--text);
+  text-align: center;
+}
+
+.preview h2 {
+  font-size: 2rem;
+  font-family: var(--font-pt-serif);
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.subTitle {
+  font-family: var(--font-cabin);
+  font-size: 1rem;
+}

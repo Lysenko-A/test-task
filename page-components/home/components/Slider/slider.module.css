@@ -1,0 +1,65 @@
+.card {
+  text-align: center;
+  color: black;
+  background-color: white;
+  padding: 1.75rem;
+  height: 100%;
+  border-radius: var(--border-radius);
+}
+
+.imgCard {
+  max-width: 62px;
+  margin: 0 auto;
+}
+
+.imgCard img {
+  width: 100%;
+  height: auto;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.text {
+  font-size: 1.125rem;
+  line-height: 21px;
+  color: #A5A6A7;
+  max-width: 490px;
+  max-height: 150px;
+  margin: 0 auto;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.controls {
+  max-width: 100px;
+  bottom: 25px;
+  top: initial;
+  left: 50%;
+  right: initial;
+  transform: translateX(-50%);
+  column-gap: 0.75rem;
+}
+
+.controls button {
+  min-width: 43px;
+  min-height: 43px;
+  box-shadow: none;
+  border-color: #434343;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #434343;
+  }
+}
+
+.controls button svg path {
+  transition: fill 0.3s;
+}
+
+.controls button:hover svg path {
+  fill: white;
+}
