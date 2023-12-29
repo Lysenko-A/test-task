@@ -34,13 +34,28 @@ export const SingUp = ({ onSetActiveTab }: { onSetActiveTab: (tab: string) => vo
     }
   });
 
-  const handleSubmit = form.onSubmit((values) => {
-    const currentUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    const newUsers = currentUsers.concat(values);
+  const handleSubmit = form.onSubmit(async (values) => {
+    try {
+      const response = await fetch('/api/sing-up', {
+        method: "POST",
+        headers : { 'Content-Type': 'application/json'},
+        body: JSON.stringify(values)
+      });
+      const data = await response.json();
 
-    localStorage.setItem('users', JSON.stringify(newUsers));
+      if (!response.ok) {
+        if (data.email) {
+          form.setErrors({
+            email: data.email
+          });
+        }
 
-    onSetActiveTab(TABS_VALUE.login);
+        return;
+      }
+
+      onSetActiveTab(TABS_VALUE.login);
+      form.reset();
+    } catch (err) {}
   });
 
   const handleSetLoginTab = (event: React.MouseEvent) => {

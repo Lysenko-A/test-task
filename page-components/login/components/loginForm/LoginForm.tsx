@@ -3,9 +3,9 @@ import Image from 'next/image';
 import { Box, Button } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 import { Input, PasswordInput } from '@/components/form';
-import { User } from '@/interfaces';
 import { ROUTERS } from '@/constants/routers';
 
 import facebookIcon from '@/public/facebook.svg';
@@ -32,35 +32,48 @@ export const LoginForm = ({ onSetActiveTab }: { onSetActiveTab: (tab: string) =>
     },
     validate: {
       email: (value) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? null : 'Invalid email'),
-      password: (value) => (value.length < 8 ? 'Password must have at least 8 symbols' : null)
-    }
+      password: (value) => (value.length < 8 ? 'Password must have at least 8 symbols' : null),
+    },
   });
 
-  const handleSubmit = form.onSubmit((values) => {
-    const currentUsers = JSON.parse(localStorage.getItem('users') || '[]') as User[];
+  const handleGoogleSignIn = () => {
+    void signIn('google', { callbackUrl: '/' });
+  };
 
-    const existsUser = currentUsers.find((user) => user.email === values.email);
+  const handleSubmit = form.onSubmit(async (values) => {
+    try {
+      const response = await signIn('credentials', {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+        callbackUrl: '/',
+      });
 
-    if (!existsUser) {
-      form.setErrors({ email: 'User does not exist' })
+      if (response && response.error) {
+        const { errors } = JSON.parse(response.error as string);
 
-      return;
-    }
+        if (errors.email) {
+          form.setErrors({
+            email: errors.email,
+          });
+        } else {
+          form.setErrors({
+            password: errors.password,
+          });
+        }
 
-    if (existsUser.password !== values.password) {
-      form.setErrors({ password: 'Wrong password' })
+        return;
+      }
 
-      return;
-    }
-
-    router.push(ROUTERS.home);
+      router.push(ROUTERS.home);
+    } catch (err) {}
   });
 
   const handleSetLoginTab = (event: React.MouseEvent) => {
     event.preventDefault();
 
     onSetActiveTab(TABS_VALUE.singUp);
-  }
+  };
 
   return (
     <>
@@ -81,13 +94,14 @@ export const LoginForm = ({ onSetActiveTab }: { onSetActiveTab: (tab: string) =>
           </Button>
 
           <Button
+            onClick={handleGoogleSignIn}
             leftSection={<Image src={googleIcon} alt='Google Icon' />}
             variant='default'
             size='lg'
             radius='xl'
             fullWidth
           >
-            Continue with Facebook
+            Continue with Google
           </Button>
           <Button
             leftSection={<Image src={twitterIcon} alt='Twitter Icon' />}
@@ -96,25 +110,39 @@ export const LoginForm = ({ onSetActiveTab }: { onSetActiveTab: (tab: string) =>
             radius='xl'
             fullWidth
           >
-            Continue with Facebook
+            Continue with Twitter
           </Button>
         </Box>
 
         <Box className={commonStyles.divider}>Or</Box>
 
         <Box component='form' onSubmit={handleSubmit}>
-          <Input label='Email' mb="1rem" placeholder='jane@gmail.com' fieldProps={form.getInputProps('email')} />
+          <Input
+            label='Email'
+            mb='1rem'
+            placeholder='jane@gmail.com'
+            fieldProps={form.getInputProps('email')}
+          />
 
-          <PasswordInput label='Password' mb="2rem" placeholder='********' fieldProps={form.getInputProps('password')} />
+          <PasswordInput
+            label='Password'
+            mb='2rem'
+            placeholder='********'
+            fieldProps={form.getInputProps('password')}
+          />
 
-          <Button className={commonStyles.submitBtn} type='submit' radius='xl' size="lg" fullWidth>
+          <Button className={commonStyles.submitBtn} type='submit' radius='xl' size='lg' fullWidth>
             Sing up
           </Button>
 
           <Box ta='center' fz={14}>
-            <Box component='span' opacity='0.5' mr='4px'>Don't have an account?</Box>
+            <Box component='span' opacity='0.5' mr='4px'>
+              Don{`'`}t have an account?
+            </Box>
 
-            <a href='/' onClick={handleSetLoginTab}>Sing up</a>
+            <a href='/' onClick={handleSetLoginTab}>
+              Sing up
+            </a>
           </Box>
         </Box>
       </div>
@@ -124,4 +152,4 @@ export const LoginForm = ({ onSetActiveTab }: { onSetActiveTab: (tab: string) =>
       </Box>
     </>
   );
-}
+};

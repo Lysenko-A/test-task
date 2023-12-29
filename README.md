@@ -7,6 +7,8 @@
 ```
 git clone https://github.com/Lysenko-A/test-task.git
 cd test-app
+```
+```bash
 yarn
 ```
 
@@ -15,6 +17,8 @@ yarn
 ```bash
 yarn dev
 ```
+
+And you need to add a `.env` file with your credentials to use.
 
 To run it in production mode, use:
 
@@ -29,9 +33,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 For this application I used [Mantine template](https://mantine.dev/guides/next/).
 Forms and form validation were made with help of this library.
+I added the "Sign in with Google or Credentials" feature and skipped the rest also I added a logout button for testing.
 
 An image for the testimonials was taken from Figma, as no other images were provided.
-
-The task didn't specify full flow of the login processes. So for the test task I went with the easiest way - using local storage.
 
 About design, the size of some elements were changed due to the good look and readability on the mobile devices.
