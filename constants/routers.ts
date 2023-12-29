@@ -1,4 +1,4 @@
 export const ROUTERS = {
-  home: '/',
+  home: '/home',
   login: '/login'
 }

@@ -37,7 +37,7 @@ export const LoginForm = ({ onSetActiveTab }: { onSetActiveTab: (tab: string) =>
   });
 
   const handleGoogleSignIn = () => {
-    void signIn('google', { callbackUrl: '/' });
+    void signIn('google', { callbackUrl: ROUTERS.home });
   };
 
   const handleSubmit = form.onSubmit(async (values) => {
@@ -46,7 +46,6 @@ export const LoginForm = ({ onSetActiveTab }: { onSetActiveTab: (tab: string) =>
         email: values.email,
         password: values.password,
         redirect: false,
-        callbackUrl: '/',
       });
 
       if (response && response.error) {
